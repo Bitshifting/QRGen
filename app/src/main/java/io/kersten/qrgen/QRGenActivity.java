@@ -2,13 +2,22 @@ package io.kersten.qrgen;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.google.zxing.qrcode.encoder.Encoder;
 
 
 public class QRGenActivity extends ActionBarActivity {
@@ -44,12 +53,26 @@ public class QRGenActivity extends ActionBarActivity {
 
     public void generateDatCode(View view) {
         try {
-            // generate a 150x150 QR code
-            Bitmap bm = encodeAsBitmap(barcode_content, BarcodeFormat.QR_CODE, 150, 150);
+            MultiFormatWriter writer = new MultiFormatWriter();
 
-            if(bm != null) {
-                ((ImageView)findViewById(R.id.qrView)).setImageBitmap(bm);
+            BitMatrix bm = writer.encode(((EditText)findViewById(R.id.qrText)).getText().toString(), BarcodeFormat.QR_CODE, 150, 150);
+            Bitmap ImageBitmap = Bitmap.createBitmap(144, 144, Bitmap.Config.ARGB_8888);
+
+            for (int i = 0; i < 144; i++) {//width
+                for (int j = 0; j < 144; j++) {//height
+                    ImageBitmap.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
+                }
             }
-        } catch (WriterException e) { //eek }
+
+            if (ImageBitmap != null) {
+                ((ImageView) findViewById(R.id.qrView)).setImageBitmap(ImageBitmap);
+            } else {
+                Toast.makeText(getApplicationContext(), "blame tito",
+                        Toast.LENGTH_SHORT).show();
+            }
+        } catch (WriterException e) {
+            Toast.makeText(getApplicationContext(), "tito broke it",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }
