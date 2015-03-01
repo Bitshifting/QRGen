@@ -1,2 +1,1 @@
-include ':app', ':PebbleKit'
-project(':PebbleKit').projectDir = new File('libraries/PebbleKit')
+include ':app'

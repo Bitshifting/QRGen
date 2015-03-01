@@ -41,4 +41,14 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send to Pebble"
+        android:id="@+id/checkForPebbleButton"
+        android:layout_below="@+id/qrText"
+        android:layout_toLeftOf="@+id/generateButton"
+        android:layout_toStartOf="@+id/generateButton"
+        android:onClick="checkForDatPebble" />
+
 </RelativeLayout>
